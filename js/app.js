@@ -1,3 +1,3 @@
-/* Treehouse FSJS Techdegree
- * Project 4 - OOP Game App
- * app.js */
+const overlay = document.querySelector('#overlay')
+const phraseSection = document.querySelector('#phrase')
+const qwerty = document.querySelectorAll('.key')
