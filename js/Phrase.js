@@ -8,20 +8,21 @@ class Phrase {
         const phraseArray = [...this.phrase];
         console.log(phraseArray);
 
-        // Add array to display as hidden list items
-        phraseArray.forEach( item => {
+        // Add array to DOM as hidden list items
+        phraseArray.forEach( letter => {
             const li = document.createElement('li')
             phraseSection.querySelector('ul').append(li);
-            li.textContent = item;
-            li.setAttribute('class', 'hide')
+            li.textContent = letter;
+            letter === ' ' ? li.setAttribute( 'class', 'space') : li.setAttribute('class', 'hide letter');
         })
         
     }
 
     showMatchedLetter () {
-
+        const phraseLetters = phraseSection.querySelectorAll('li');
     }
 }
 
-const one = new Phrase("Hellop there")
-one.addPhraseToDisplay()
+const phrase = new Phrase ( game.activePhrase);
+phrase.addPhraseToDisplay()
+
