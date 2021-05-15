@@ -12,13 +12,15 @@ class Game {
     }
 
     startGame () {
-        overlay.querySelector('button').addEventListener( 'click', () => overlay.style.display = 'none' );
+        // Hides start game overlay
+        overlay.style.display = 'none' 
+        // Retrieves random phrase
         this.getRandomPhrase();
-        console.log(this.activePhrase);
+        // Creates phrase object and prints to DOM
+        const phrase = new Phrase (this.activePhrase);
+        phrase.addPhraseToDisplay();
+        phrase.checkLetter()
     }
 
     getRandomPhrase () { this.activePhrase = this.phrases[ Math.floor( Math.random() * this.phrases.length ) ] }
 }
-
-const game = new Game;
-game.startGame()
