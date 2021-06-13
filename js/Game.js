@@ -1,5 +1,5 @@
 class Game {
-    constructor  ( ) {
+    constructor ( ) {
         this.missed = 0,
         this.phrases = [
             'Let other pens dwell upon guilt and misery',
@@ -19,8 +19,44 @@ class Game {
         // Creates phrase object and prints to DOM
         const phrase = new Phrase (this.activePhrase);
         phrase.addPhraseToDisplay();
-        phrase.checkLetter()
+        this.handleInteractions(phrase);
+    }
+
+    handleInteractions (phrase) {
+        phrase.checkLetter();
+        this.removeLife();
+        this.checkForWin();
+        this.gameOver();
     }
 
     getRandomPhrase () { this.activePhrase = this.phrases[ Math.floor( Math.random() * this.phrases.length ) ] }
+
+    removeLife () {
+        qwerty.addEventListener ( 'click' , e => {
+            if ( e.target.classList.contains( 'key' ) ) {
+                tries[ this.missed - 1 ].src = '../images/lostHeart.png'
+            } 
+        })    
+    }
+    
+    checkForWin () { 
+        qwerty.addEventListener( 'click', () => {
+            if ( document.querySelectorAll('.hide').length === 0 ) {
+                overlay.classList.remove( 'lose' );
+                overlay.classList.add( 'win' );
+                overlay.style.display = 'flex';
+                game = null;
+            }
+        })
+    }
+        
+    gameOver () {
+        qwerty.addEventListener('click', () => {
+            if ( document.querySelectorAll('.wrong').length === 5 ) {
+                overlay.classList.remove( 'win' );
+                overlay.classList.add( 'lose' );
+                overlay.style.display = 'flex';
+            }
+        })
+    }
 }
