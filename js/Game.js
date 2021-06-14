@@ -17,46 +17,56 @@ class Game {
         // Retrieves random phrase
         this.getRandomPhrase();
         // Creates phrase object and prints to DOM
-        const phrase = new Phrase (this.activePhrase);
+        phrase = new Phrase (this.activePhrase);
         phrase.addPhraseToDisplay();
         this.handleInteractions(phrase);
     }
+    resetGame () {
+        phrase.removePhraseFromDisplay()
+        this.restoreLives()
+        phrase.clearKeyboard()
+        this.missed = 0
+    }
 
     handleInteractions (phrase) {
-        phrase.checkLetter();
-        this.removeLife();
-        this.checkForWin();
-        this.gameOver();
+        qwerty.addEventListener( 'click', e => {
+            phrase.checkLetter(e);
+            this.removeLife(e);
+            this.checkForWin();
+            this.gameOver();
+        })
     }
 
     getRandomPhrase () { this.activePhrase = this.phrases[ Math.floor( Math.random() * this.phrases.length ) ] }
 
-    removeLife () {
-        qwerty.addEventListener ( 'click' , e => {
-            if ( e.target.classList.contains( 'key' ) ) {
-                tries[ this.missed - 1 ].src = '../images/lostHeart.png'
-            } 
-        })    
+    removeLife (e) {
+        if ( e.target.classList.contains( 'wrong' ) ) {
+            tries[ this.missed - 1 ].src = '../images/lostHeart.png'
+        } 
+  
+    }
+
+    restoreLives () {
+        for ( let i = 0 ; i < tries.length; i++) {
+            tries[i].src = '../images/liveHeart.png'
+        }
     }
     
-    checkForWin () { 
-        qwerty.addEventListener( 'click', () => {
-            if ( document.querySelectorAll('.hide').length === 0 ) {
-                overlay.classList.remove( 'lose' );
-                overlay.classList.add( 'win' );
-                overlay.style.display = 'flex';
-                game = null;
-            }
-        })
+    checkForWin () {  
+        if ( document.querySelectorAll('.hide').length === 0 ) {
+            overlay.classList.remove( 'lose' );
+            overlay.classList.add( 'win' );
+            overlay.style.display = 'flex';
+            this.resetGame()
+        }
     }
         
     gameOver () {
-        qwerty.addEventListener('click', () => {
-            if ( document.querySelectorAll('.wrong').length === 5 ) {
-                overlay.classList.remove( 'win' );
-                overlay.classList.add( 'lose' );
-                overlay.style.display = 'flex';
-            }
-        })
+        if ( document.querySelectorAll('.wrong').length === 5 ) {
+            overlay.classList.remove( 'win' );
+            overlay.classList.add( 'lose' );
+            overlay.style.display = 'flex';
+            this.resetGame()
+        }
     }
 }

@@ -3,6 +3,7 @@ const phraseSection = document.querySelector('#phrase');
 const qwerty = document.querySelector('#qwerty');
 const tries = document.querySelectorAll('img');
 let game = null;
+let phrase = null;
 
 // Start game with overlay button
 overlay.querySelector('button').addEventListener( 'click', () =>  {
