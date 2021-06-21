@@ -19,26 +19,24 @@ class Phrase {
         phraseSection.querySelector( 'ul' ).innerHTML = '';
     }
     
-    checkLetter(e) {
+    checkLetter(letter) {
         const phraseLetters = phraseSection.querySelectorAll('li')
-         // Cycles through phrase and displays matching letter
-        //  Adds styles to selected keys on keyboard
-        if( ( e.target.classList.contains( 'chosen' ) || e.target.classList.contains( 'wrong' ) ) === false ) {
-            for ( let i = 0; i < phraseLetters.length; i++ ) {
-                if ( e.target.textContent === phraseLetters[i].textContent ) {
+        if ( letter.classList.contains( 'chosen' || 'wrong' ) === false) {
+            for ( let i = 0; i < phraseLetters.length; i++ ){
+                if ( letter.textContent === phraseLetters[i].textContent ) {
                     this.showMatchedLetter(phraseLetters[i]);
-                    e.target.classList.add( 'chosen' );
-                }
+                    letter.classList.add( 'chosen' );
+                }      
             }
-            // If selected item is wrong adds to missed variable and adds styles to selected keys
-            if  ( e.target.classList.contains( 'key' ) && e.target.classList.contains( 'chosen' ) == false ) {
-                e.target.classList.add( 'wrong' );
-                game.missed++;
+            if ( letter.classList.contains( 'chosen' ) === false ) {
+                    letter.classList.add( 'wrong' );
             }
         }
+        
+        
     }
 
-    clearKeyboard() {
+    resetKeyboard() {
         for ( let i = 0; i < document.querySelectorAll( '.key' ).length; i++ ) {
             document.querySelectorAll( '.key' )[i].classList.remove( 'chosen' );
             document.querySelectorAll( '.key' )[i].classList.remove( 'wrong' );

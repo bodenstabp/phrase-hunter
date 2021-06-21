@@ -14,50 +14,47 @@ class Game {
     startGame () {
         // Hides start game overlay
         overlay.style.display = 'none' 
-        // Retrieves random phrase
         this.getRandomPhrase();
         // Creates phrase object and prints to DOM
         phrase = new Phrase (this.activePhrase);
-        phrase.addPhraseToDisplay();
-        this.handleInteractions(phrase);
+        phrase.addPhraseToDisplay();        
     }
-    resetGame () {
+
+    resetGame () { 
+        qwerty.removeEventListener('click', e => {
+            if ( e.target.classList.contains( 'key' ) ) {
+                game.handleInteractions( phrase, e.target ) 
+            }
+        });
         phrase.removePhraseFromDisplay()
         this.restoreLives()
-        phrase.clearKeyboard()
+        phrase.resetKeyboard()
         this.missed = 0
     }
 
-    handleInteractions (phrase) {
-        qwerty.addEventListener( 'click', e => {
+    handleInteractions (phrase, e ) { 
             phrase.checkLetter(e);
             this.removeLife(e);
             this.checkForWin();
             this.gameOver();
-        })
     }
 
     getRandomPhrase () { this.activePhrase = this.phrases[ Math.floor( Math.random() * this.phrases.length ) ] }
 
-    removeLife (e) {
-        if ( e.target.classList.contains( 'wrong' ) ) {
-            tries[ this.missed - 1 ].src = '../images/lostHeart.png'
-        } 
-  
-    }
-
-    restoreLives () {
-        for ( let i = 0 ; i < tries.length; i++) {
-            tries[i].src = '../images/liveHeart.png'
+    removeLife (e) { 
+        if ( e.classList.contains( 'wrong' ) ) {
+            // this.missed++;
+            tries[ this.missed ].querySelector('img').src = '../images/lostHeart.png' 
         }
-    }
+     }
+
+    restoreLives () { for ( let i = 0 ; i < tries.length; i++) { tries[ i ].firstElementChild.src = '../images/liveHeart.png' } }
     
     checkForWin () {  
-        if ( document.querySelectorAll('.hide').length === 0 ) {
+        if ( document.querySelectorAll('.hide').length === 0 && overlay.classList.contains( 'lose' ) === false ) {
             overlay.classList.remove( 'lose' );
             overlay.classList.add( 'win' );
             overlay.style.display = 'flex';
-            this.resetGame()
         }
     }
         
@@ -66,7 +63,6 @@ class Game {
             overlay.classList.remove( 'win' );
             overlay.classList.add( 'lose' );
             overlay.style.display = 'flex';
-            this.resetGame()
         }
     }
 }
