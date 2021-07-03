@@ -1,16 +1,17 @@
 class Game {
     constructor ( ) {
         this.missed = 0,
-        this.phrases = [
-            'Let other pens dwell upon guilt and misery',
-            'He who destroys a good book destroys reason itself',
-            'The soul becomes dyed with the color of its thoughts',
-            'Reality leaves a lot to the imagination',
-            'Eat and be merry'
+        this.phrases =  [
+            { phrase : 'Eat and be merry' },
+            { phrase : 'Live and laugh' },
+            { phrase : 'Go out and find your success' },
+            { phrase : 'Make something great' },
+            { phrase : 'Happiness is a virtue' }
         ],
         this.activePhrase = null
     }
 
+    // See startGame
     startGame () {
         // Hides start game overlay
         overlay.style.display = 'none' 
@@ -20,16 +21,12 @@ class Game {
         phrase.addPhraseToDisplay();        
     }
 
+    // See startGame
     resetGame () { 
-        qwerty.removeEventListener('click', e => {
-            if ( e.target.classList.contains( 'key' ) ) {
-                game.handleInteractions( phrase, e.target ) 
-            }
-        });
-        phrase.removePhraseFromDisplay()
-        this.restoreLives()
-        phrase.resetKeyboard()
-        this.missed = 0
+        phrase.removePhraseFromDisplay();
+        this.restoreLives();
+        phrase.resetKeyboard();
+        this.missed = 0;
     }
 
     handleInteractions (phrase, e ) { 
@@ -39,17 +36,26 @@ class Game {
             this.gameOver();
     }
 
-    getRandomPhrase () { this.activePhrase = this.phrases[ Math.floor( Math.random() * this.phrases.length ) ] }
+    // See startGasme^
+    getRandomPhrase () { 
+        this.activePhrase = this.phrases[ Math.floor( Math.random() * this.phrases.length ) ].phrase
+    }
 
+    // See handleInteractions^
     removeLife (e) { 
         if ( e.classList.contains( 'wrong' ) ) {
-            // this.missed++;
-            tries[ this.missed ].querySelector('img').src = '../images/lostHeart.png' 
+            tries[ this.missed ].querySelector('img').src = 'images/lostHeart.png' 
+            this.missed++;
         }
      }
 
-    restoreLives () { for ( let i = 0 ; i < tries.length; i++) { tries[ i ].firstElementChild.src = '../images/liveHeart.png' } }
+    //  See handleInteractions^
+    restoreLives () { 
+        for ( let i = 0 ; i < tries.length; i++) { 
+            tries[ i ].firstElementChild.src = 'images/liveHeart.png' } 
+        }
     
+    // See handleInteractions^
     checkForWin () {  
         if ( document.querySelectorAll('.hide').length === 0 && overlay.classList.contains( 'lose' ) === false ) {
             overlay.classList.remove( 'lose' );
@@ -57,7 +63,8 @@ class Game {
             overlay.style.display = 'flex';
         }
     }
-        
+       
+    // See handleInteractions^
     gameOver () {
         if ( document.querySelectorAll('.wrong').length === 5 ) {
             overlay.classList.remove( 'win' );
